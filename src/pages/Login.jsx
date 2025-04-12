@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import axios from '../axios';
 import { useAuth } from '../contexts/AuthContext';
+// import Skeleton from "react-loading-skeleton";
+// import 'react-loading-skeleton/dist/skeleton.css';
+import LoadingSpinner from "../Theme/LoadingSpinner.jsx";
 
 export default function Login() {
 	const { setUser, csrfToken } = useAuth();
-	const [error, setError] = React.useState(null);
+	const [error, setError] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	// login user
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setLoading(true);
 		const { email, password } = e.target.elements;
 		const body = {
 			email: email.value,
@@ -23,103 +28,132 @@ export default function Login() {
 				return <Navigate to="/profile" />;
 			}
 		} catch (error) {
-			if (error.response.status === 401) {
+			if (error.response?.status === 401) {
 				setError(error.response.data.message);
+			} else {
+				setError("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");
 			}
+		}
+		finally {
+			setLoading(false);
 		}
 	};
 
 	return (
-		<section className="bg-gray-50 dark:bg-gray-900">
-			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-				<a
-					href="#"
-					className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-					<img
-						className="w-20 h-20 mr-2"
-						src="/image/healthy.jpg"
-						alt="logo"
-					/>
-					MediTime
-				</a>
-				<div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-					<div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-							Đăng nhập
-						</h1>
-						{error && (
-							<div
-								className="flex p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
-								role="alert">
-								<svg
-									aria-hidden="true"
-									className="flex-shrink-0 inline w-5 h-5 mr-3"
-									fill="currentColor"
-									viewBox="0 0 20 20"
-									xmlns="http://www.w3.org/2000/svg">
-									<path
-										fillRule="evenodd"
-										d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-										clipRule="evenodd"></path>
-								</svg>
-								<span className="sr-only">Info</span>
-								<div>{error}</div>
-							</div>
-						)}
 
-						<form
-							className="space-y-4 md:space-y-6"
-							action="#"
-							method="post"
-							onSubmit={handleSubmit}>
-							<div>
-								<label
-									htmlFor="email"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-									Email
-								</label>
-								<input
-									type="email"
-									name="email"
-									id="email"
-									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-									placeholder="name@gmail.com"
-									required
-								/>
-							</div>
-							<div>
-								<label
-									htmlFor="password"
-									className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-									Mật khẩu
-								</label>
-								<input
-									type="password"
-									name="password"
-									id="password"
-									placeholder="••••••••"
-									className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-									required
-								/>
-							</div>
-
-							<button
-								type="submit"
-								className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-								Đăng nhập
-							</button>
-							<p className="text-sm font-light text-gray-500 dark:text-gray-400">
-								Bạn chưa có tài khoản?{' '}
-								<Link
-									to="/register"
-									className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-									Đăng ký
-								</Link>
-							</p>
-						</form>
-					</div>
+		<div className="flex justify-center items-center min-h-screen bg-gray-50">
+			{loading && (
+				<div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+					<LoadingSpinner />
 				</div>
+			)}
+			<div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+				<div className="flex justify-center mb-6 items-center">
+					<img className="w-12 h-12" src="/image/healthcare.png" alt="MediTime"/>
+					<span className="ml-2 text-xl font-semibold text-blue-500">MediTime</span>
+				</div>
+
+				<h1 className="text-2xl font-bold mb-6">Đăng nhập</h1>
+
+				{error && (
+					<div className="p-3 mb-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+						{error}
+					</div>
+				)}
+
+				{/*{loading ? (*/}
+				{/*	<div className="space-y-4">*/}
+				{/*		<Skeleton height={40} />*/}
+				{/*		<Skeleton height={40} />*/}
+				{/*		<Skeleton height={30} />*/}
+				{/*		<Skeleton height={50} />*/}
+				{/*		<Skeleton height={20} />*/}
+				{/*		<Skeleton height={50} />*/}
+				{/*		<Skeleton height={50} />*/}
+				{/*		<Skeleton height={20} />*/}
+				{/*	</div>*/}
+				{/*) : (*/}
+					<form className="space-y-4" onSubmit={handleSubmit}>
+						<div>
+							<label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">
+								Email
+							</label>
+							<input
+								type="email"
+								name="email"
+								id="email"
+								className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+								placeholder="abc@gmail.com"
+								required
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-700">
+								Mật khẩu
+							</label>
+							<input
+								type="password"
+								name="password"
+								id="password"
+								className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+								placeholder="••••••"
+								required
+							/>
+						</div>
+
+						<div className="flex items-center justify-between">
+							<div className="flex items-center">
+								<input
+									id="remember"
+									type="checkbox"
+									className="w-4 h-4 border-gray-300 rounded focus:outline-none focus:ring-0 focus:ring-transparent"
+								/>
+								<label htmlFor="remember" className="ml-2 text-sm text-gray-600">
+									Lưu mật khẩu
+								</label>
+							</div>
+							<p className="text-center text-sm text-gray-600">
+								<Link to="#" className="text-blue-600 hover:underline">Quên mật khẩu?</Link>
+							</p>
+						</div>
+
+						<button
+							type="submit"
+							className="w-full py-3 text-white font-medium bg-gray-800 hover:bg-gray-900 rounded-lg">
+							Đăng nhập
+						</button>
+
+						<div className="text-center text-sm text-gray-500">
+							Hoặc
+						</div>
+
+						<button type="button"
+								className="w-full py-3 flex justify-center items-center border border-gray-300 rounded-lg hover:bg-gray-200">
+							<svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+								<path
+									d="M12.545 10.239v3.821h5.445c-.712 2.315-2.647 3.972-5.445 3.972-3.332 0-6.033-2.701-6.033-6.032s2.701-6.032 6.033-6.032c1.498 0 2.866.559 3.921 1.488l2.935-2.935C17.256 2.868 14.992 1.998 12.545 1.998 6.963 1.998 2.455 6.506 2.455 12s4.508 10.002 10.09 10.002c8.478 0 10.325-7.866 9.486-11.762l-9.486-.001z"
+									fill="#4285F4"/>
+							</svg>
+							Đăng nhập bằng Google
+						</button>
+
+						<button type="button"
+								className="w-full py-3 flex justify-center items-center border border-gray-300 rounded-lg hover:bg-gray-200">
+							<svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
+								<path
+									d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02z"
+									fill="#1877F2"/>
+							</svg>
+							Đăng nhập bằng Facebook
+						</button>
+
+						<p className="text-center text-sm text-gray-600">
+							Bạn chưa có tài khoản? <Link to="/register" className="text-blue-600 hover:underline">Đăng ký</Link>
+						</p>
+					</form>
+				{/*)}*/}
 			</div>
-		</section>
+		</div>
 	);
 }

@@ -5,6 +5,8 @@ import axios from '../axios';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function DefaultLayout() {
+	const domainUrl = import.meta.env.VITE_DOMAIN_URL || '/';
+	console.log(domainUrl);
 	const { user, setUser } = useAuth();
 
 	// check if user is logged in or not from server
@@ -45,16 +47,16 @@ export default function DefaultLayout() {
 		<>
 			<nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
 				<div className="container flex flex-wrap items-center justify-between mx-auto">
-					<a href="https://dcodemania.com/" className="flex items-center">
+					<NavLink to={domainUrl + 'home'} className="flex items-center">
 						<img
-							src="/image/healthy.jpg"
+							src="/image/healthcare.png"
 							className="h-6 mr-3 sm:h-9"
-							alt="DCodeMania Logo"
+							alt="MediTime Logo"
 						/>
 						<span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
 							MediTime
 						</span>
-					</a>
+					</NavLink>
 					<button
 						data-collapse-toggle="navbar-default"
 						type="button"
@@ -84,7 +86,7 @@ export default function DefaultLayout() {
 											? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
 											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
 									}>
-									Profile
+									Tài khoản
 								</NavLink>
 							</li>
 							<li>
@@ -95,7 +97,7 @@ export default function DefaultLayout() {
 											? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white'
 											: 'block py-2 pl-3 pr-4 rounded md:bg-transparent md:p-0 dark:text-gray-400 md:dark:hover:text-white'
 									}>
-									About
+									Về chúng tôi
 								</NavLink>
 							</li>
 
@@ -104,7 +106,7 @@ export default function DefaultLayout() {
 									onClick={handleLogout}
 									href="#"
 									className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-									Logout
+									Đăng xuất
 								</a>
 							</li>
 						</ul>
