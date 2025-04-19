@@ -1,10 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Login from './pages/Login';
-import About from './pages/About';
-import Profile from './pages/Profile';
-import Register from './pages/Register';
-import ProtectedLayout from './components/ProtectedLayout';
-import GuestLayout from './components/GuestLayout';
+import Login from './modules/patient/pages/Login';
+import About from './modules/patient/pages/About';
+import Profile from './modules/patient/pages/Profile';
+import Register from './modules/patient/pages/Register';
+import MedicalHomepage from "./modules/patient/pages/Home";
+import ProtectedLayout from './modules/core/components/ProtectedLayout';
+import GuestLayout from "./modules/core/components/GuestLayout.jsx";
+// import Dashboard from './modules/dashboard/pages/dashboard.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -19,6 +21,7 @@ const router = createBrowserRouter([
 				path: '/register',
 				element: <Register />,
 			},
+
 		],
 	},
 	{
@@ -33,6 +36,17 @@ const router = createBrowserRouter([
 				path: '/profile',
 				element: <Profile />,
 			},
+			{
+				path: '/home',
+				element: <MedicalHomepage />,
+			},
+
+			// {
+			// 	path: '/dashboard',
+			// 	element: <Dashboard />,
+			// },
+
+
 		],
 	},
 ]);
