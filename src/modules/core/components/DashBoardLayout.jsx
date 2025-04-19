@@ -2,12 +2,12 @@ import React, {useEffect, useState} from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import axios from '../../../axios.js';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import LoadingSpinner from "./Spiner/LoadingSpinner.jsx";
 
-export default function DefaultLayout() {
+export default function DashBoardLayout() {
 	const domainUrl = import.meta.env.VITE_DOMAIN_URL || '/';
 	const [loading, setLoading] = useState(false);
 	const { user, setUser } = useAuth();
@@ -51,9 +51,6 @@ export default function DefaultLayout() {
 	};
 	return (
 		<>
-			{user.role == 'patient' && (
-				<Header onLogout={handleLogout}/>
-			)}
 			{loading && (
 				<div className="fixed top-0 left-0 w-full h-full z-50">
 					<div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
@@ -61,13 +58,9 @@ export default function DefaultLayout() {
 					</div>
 				</div>
 			)}
-			<main className="container flex justify-center flex-col items-center mx-auto mt-10 mb-10">
+			<main className="container flex justify-center flex-col items-center mx-0 px-0">
 				<Outlet/>
 			</main>
-
-			{user.role == 'patient' && (
-				<Footer/>
-			)}
 			
 		</>
 	);

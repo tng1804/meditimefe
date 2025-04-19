@@ -1,18 +1,18 @@
-// src/App.jsx
+// src/DashBoard.jsx
 import React, { useState, useEffect } from 'react';
-import { 
-  FaHospital, FaBars, FaUserMd, FaTachometerAlt, FaNotesMedia, FaProcedures, 
-  FaCalendarCheck, FaPills, FaChartLine, FaCog, FaBell, FaEnvelope, FaUser,
-  FaFilemedical, FaCheckCircle, FaHourglassHalf, FaExclamationTriangle, 
-  FaSearch, FaPlus, FaEye, FaEdit, FaTrashAlt, FaChevronLeft, FaChevronRight
-} from 'react-icons/fa';
-import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-import { Doughnut, Line } from 'react-chartjs-2';
+// import { 
+//   FaHospital, FaBars, FaUserMd, FaTachometerAlt, FaNotesMedia, FaProcedures, 
+//   FaCalendarCheck, FaPills, FaChartLine, FaCog, FaBell, FaEnvelope, FaUser,
+//   FaFilemedical, FaCheckCircle, FaHourglassHalf, FaExclamationTriangle, 
+//   FaSearch, FaPlus, FaEye, FaEdit, FaTrashAlt, FaChevronLeft, FaChevronRight
+// } from 'react-icons/fa';
+// import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+// import { Doughnut, Line } from 'react-chartjs-2';
 
 // Register ChartJS components
-ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+// ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-function Dashboard() {
+function DashBoard() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
   
   const toggleSidebar = () => {
@@ -150,25 +150,25 @@ function Dashboard() {
   ];
 
   return (
-    <div className="bg-gray-100 font-sans h-screen overflow-hidden">
+    <div className="bg-gray-100 font-sans h-screen overflow-hidden w-full">
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
         <div className={`bg-blue-800 text-white flex flex-col ${sidebarCollapsed ? 'w-16' : 'w-64'} transition-all duration-300`}>
           {/* Logo */}
           <div className="p-4 flex items-center justify-between border-b border-blue-700">
             <div className="flex items-center">
-              <FaHospital className="text-2xl" />
+              {/* <FaHospital className="text-2xl" /> */}
               {!sidebarCollapsed && <span className="font-bold text-xl ml-3">MEDICARE</span>}
             </div>
             <button onClick={toggleSidebar} className="text-white focus:outline-none">
-              <FaBars />
+              {/* <FaBars /> */}
             </button>
           </div>
           
           {/* User Profile */}
           <div className="p-4 flex items-center border-b border-blue-700">
             <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-              <FaUserMd />
+              {/* <FaUserMd /> */}
             </div>
             {!sidebarCollapsed && (
               <div className="ml-3">
@@ -183,43 +183,43 @@ function Dashboard() {
             <ul className="py-2">
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaTachometerAlt className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaTachometerAlt className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Tổng quan</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 bg-blue-700 text-white ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaNotesMedia className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaNotesMedia className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Hồ sơ bệnh án</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaProcedures className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaProcedures className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Bệnh nhân</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaCalendarCheck className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaCalendarCheck className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Lịch hẹn</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaPills className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaPills className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Thuốc</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaChartLine className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaChartLine className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Báo cáo</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  <FaCog className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {/* <FaCog className={sidebarCollapsed ? '' : 'mr-3'} /> */}
                   {!sidebarCollapsed && <span>Cài đặt</span>}
                 </a>
               </li>
@@ -242,19 +242,19 @@ function Dashboard() {
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <button className="text-gray-600 hover:text-gray-900 focus:outline-none">
-                    <FaBell className="text-xl" />
+                    {/* <FaBell className="text-xl" /> */}
                     <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
                   </button>
                 </div>
                 <div className="relative">
                   <button className="text-gray-600 hover:text-gray-900 focus:outline-none">
-                    <FaEnvelope className="text-xl" />
+                    {/* <FaEnvelope className="text-xl" /> */}
                     <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">5</span>
                   </button>
                 </div>
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                    <FaUser className="text-blue-600" />
+                    {/* <FaUser className="text-blue-600" /> */}
                   </div>
                   <span className="ml-2 text-sm font-medium">BS. Nguyễn Văn A</span>
                 </div>
@@ -269,7 +269,7 @@ function Dashboard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-                    <FaFilemedical className="text-xl" />
+                    {/* <FaFilemedical className="text-xl" /> */}
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Tổng hồ sơ</p>
@@ -280,7 +280,7 @@ function Dashboard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-green-100 text-green-600">
-                    <FaCheckCircle className="text-xl" />
+                    {/* <FaCheckCircle className="text-xl" /> */}
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Đã hoàn thành</p>
@@ -291,7 +291,7 @@ function Dashboard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                    <FaHourglassHalf className="text-xl" />
+                    {/* <FaHourglassHalf className="text-xl" /> */}
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Đang điều trị</p>
@@ -302,7 +302,7 @@ function Dashboard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-red-100 text-red-600">
-                    <FaExclamationTriangle className="text-xl" />
+                    {/* <FaExclamationTriangle className="text-xl" /> */}
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Cần xử lý</p>
@@ -321,7 +321,7 @@ function Dashboard() {
                 <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                   <div className="relative">
                     <input type="text" placeholder="Tìm kiếm..." className="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    <FaSearch className="absolute left-3 top-3 text-gray-400" />
+                    {/* <FaSearch className="absolute left-3 top-3 text-gray-400" /> */}
                   </div>
                   <select className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>Tất cả khoa</option>
@@ -331,7 +331,7 @@ function Dashboard() {
                     <option>Nhi khoa</option>
                   </select>
                   <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center">
-                    <FaPlus className="mr-2" />
+                    {/* <FaPlus className="mr-2" /> */}
                     <span>Thêm hồ sơ</span>
                   </button>
                 </div>
@@ -375,9 +375,10 @@ function Dashboard() {
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${patient.statusClass}`}>{patient.status}</span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <button className="text-blue-600 hover:text-blue-900 mr-3"><FaEye /></button>
-                          <button className="text-yellow-600 hover:text-yellow-900 mr-3"><FaEdit /></button>
-                          <button className="text-red-600 hover:text-red-900"><FaTrashAlt /></button>
+                            {/* <FaEye /> <FaEdit /> <FaTrashAlt />*/}
+                          <button className="text-blue-600 hover:text-blue-900 mr-3">Mắt</button>
+                          <button className="text-yellow-600 hover:text-yellow-900 mr-3"></button>
+                          <button className="text-red-600 hover:text-red-900"></button>
                         </td>
                       </tr>
                     ))}
@@ -405,7 +406,7 @@ function Dashboard() {
                     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                       <a href="#" className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                         <span className="sr-only">Trước</span>
-                        <FaChevronLeft className="h-5 w-5" />
+                        {/* <FaChevronLeft className="h-5 w-5" /> */}
                       </a>
                       <a href="#" aria-current="page" className="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 1 </a>
                       <a href="#" className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 2 </a>
@@ -414,7 +415,7 @@ function Dashboard() {
                       <a href="#" className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 8 </a>
                       <a href="#" className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                         <span className="sr-only">Sau</span>
-                        <FaChevronRight className="h-5 w-5" />
+                        {/* <FaChevronRight className="h-5 w-5" /> */}
                       </a>
                     </nav>
                   </div>
@@ -434,7 +435,7 @@ function Dashboard() {
                   </select>
                 </div>
                 <div className="h-64">
-                  <Doughnut data={departmentChartData} options={chartOptions} />
+                  {/* <Doughnut data={departmentChartData} options={chartOptions} /> */}
                 </div>
               </div>
               <div className="bg-white rounded-lg shadow p-6">
@@ -447,7 +448,7 @@ function Dashboard() {
                   </select>
                 </div>
                 <div className="h-64">
-                  <Line data={trendChartData} options={lineChartOptions} />
+                  {/* <Line data={trendChartData} options={lineChartOptions} /> */}
                 </div>
               </div>
             </div>
@@ -458,4 +459,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashBoard;

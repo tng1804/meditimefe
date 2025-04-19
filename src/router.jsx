@@ -6,7 +6,8 @@ import Register from './modules/patient/pages/Register';
 import MedicalHomepage from "./modules/patient/pages/Home";
 import ProtectedLayout from './modules/core/components/ProtectedLayout';
 import GuestLayout from "./modules/core/components/GuestLayout.jsx";
-// import Dashboard from './modules/dashboard/pages/dashboard.jsx';
+import Dashboard from './modules/dashboard/pages/Dashboard.jsx';
+import DashBoardLayout from './modules/core/components/DashBoardLayout.jsx';
 
 const router = createBrowserRouter([
 	{
@@ -41,14 +42,22 @@ const router = createBrowserRouter([
 				element: <MedicalHomepage />,
 			},
 
-			// {
-			// 	path: '/dashboard',
-			// 	element: <Dashboard />,
-			// },
+
+		],
+	},
+	{
+		path: '/',
+		element: <DashBoardLayout />,
+		children: [
+			{
+				path: '/dashboard',
+				element: <Dashboard />,
+			},
 
 
 		],
 	},
+	
 ]);
 
 export default router;
