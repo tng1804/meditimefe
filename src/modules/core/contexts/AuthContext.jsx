@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import axios from '../../../axios.js';
 
 const AuthContent = createContext({
@@ -21,6 +21,27 @@ export const AuthProvider = ({ children }) => {
 		}
 		_setUser(user);
 	};
+
+	// check if user is logged in or not from server: Nếu bên login response chưa setUser
+	// useEffect(() => {
+	// 	// Nếu KHÔNG phải đang ở trang login hoặc register thì mới call API
+	// 	const isPublicRoute = ['/', '/register'].includes(location.pathname);
+	// 	if (!isPublicRoute) {
+	// 		(async () => {
+	// 			try {
+	// 				const resp = await axios.get('/user');
+	// 				if (resp.status === 200) {
+	// 					setUser(resp.data.data);
+	// 				}
+	// 			} catch (error) {
+	// 				if (error.response.status === 401) {
+	// 					localStorage.removeItem('user');
+	// 					window.location.href = '/';
+	// 				}
+	// 			}
+	// 		})();
+	// 	}
+	// }, []);
 
 	// csrf token generation for guest methods
 	const csrfToken = async () => {

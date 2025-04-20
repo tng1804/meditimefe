@@ -6,53 +6,43 @@ import { useAuth } from '../contexts/AuthContext';
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import LoadingSpinner from "./Spiner/LoadingSpinner.jsx";
+import useLogout from '../hooks/useLogout.jsx';
 
 export default function DefaultLayout() {
 	const domainUrl = import.meta.env.VITE_DOMAIN_URL || '/';
-	const [loading, setLoading] = useState(false);
 	const { user, setUser } = useAuth();
+	// Hook handle logout
+	const { logout, loading } = useLogout();
 
 	// check if user is logged in or not from server
-	useEffect(() => {
-		(async () => {
-			try {
-				const resp = await axios.get('/user');
-				if (resp.status === 200) {
-					setUser(resp.data.data);
-				}
-			} catch (error) {
-				if (error.response.status === 401) {
-					localStorage.removeItem('user');
-					window.location.href = '/';
-				}
-			}
-		})();
-	}, []);
+	// useEffect(() => {
+	// 	(async () => {
+	// 		try {
+	// 			const resp = await axios.get('/user');
+	// 			if (resp.status === 200) {
+	// 				setUser(resp.data.data);
+	// 			}
+	// 		} catch (error) {
+	// 			if (error.response.status === 401) {
+	// 				localStorage.removeItem('user');
+	// 				window.location.href = '/';
+	// 			}
+	// 		}
+	// 	})();
+	// }, []);
 
 	// if user is not logged in, redirect to login page
 	if (!user) {
 		return <Navigate to="/" />;
 	}
 
-	// logout user
-	const handleLogout = async () => {
-		setLoading(true);
-		try {
-			const resp = await axios.post('/logout');
-			if (resp.status === 200) {
-				localStorage.removeItem('user');
-				window.location.href = '/';
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			setLoading(false);
-		}
-	};
+	if (user.role != 'patient'){
+		return <Navigate to = "/dashboard" />;
+	}
 	return (
 		<>
 			{user.role == 'patient' && (
-				<Header onLogout={handleLogout}/>
+				<Header onLogout={logout}/>
 			)}
 			{loading && (
 				<div className="fixed top-0 left-0 w-full h-full z-50">

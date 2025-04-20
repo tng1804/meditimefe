@@ -8,6 +8,7 @@ import ProtectedLayout from './modules/core/components/ProtectedLayout';
 import GuestLayout from "./modules/core/components/GuestLayout.jsx";
 import Dashboard from './modules/dashboard/pages/Dashboard.jsx';
 import DashBoardLayout from './modules/core/components/DashBoardLayout.jsx';
+import PatientProfile from "./modules/patient/pages/Profile";
 
 const router = createBrowserRouter([
 	{
@@ -35,7 +36,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/profile',
-				element: <Profile />,
+				element: <PatientProfile />,
 			},
 			{
 				path: '/home',

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axios from '../../../axios.js';
 import { useAuth } from '../../core/contexts/AuthContext.jsx';
 // import Skeleton from "react-loading-skeleton";
@@ -11,21 +11,50 @@ export default function Login() {
 	const [error, setError] = useState(null);
 	const [loading, setLoading] = useState(false);
 
-	// login user
+	const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [remember, setRemember] = useState(false);
+    const navigate = useNavigate();
+
+	// Load saved credentials from localStorage on mount
+	useEffect(() => {
+		const savedEmail = localStorage.getItem('savedEmail');
+		const savedPassword = localStorage.getItem('savedPassword');
+		const savedRemember = localStorage.getItem('remember') === 'true';
+
+		if (savedRemember && savedEmail && savedPassword) {
+            setEmail(savedEmail);
+            setPassword(savedPassword);
+            setRemember(true);
+        }
+	}, [])
+
+	// Handle login submission
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		const { email, password } = e.target.elements;
-		const body = {
-			email: email.value,
-			password: password.value,
-		};
+		const body = { email, password };
 		await csrfToken();
 		try {
 			const resp = await axios.post('/login', body);
 			if (resp.status === 200) {
 				setUser(resp.data.user);
-				return <Navigate to="/profile" />;
+				// Save credentials to localStorage if "remember" is checked
+				if (remember) {
+                    localStorage.setItem('savedEmail', email);
+                    localStorage.setItem('savedPassword', password);
+                    localStorage.setItem('remember', 'true');
+                } else {
+                    localStorage.removeItem('savedEmail');
+                    localStorage.removeItem('savedPassword');
+                    localStorage.removeItem('remember');
+                }
+
+				if(user.role == 'patient'){
+					useNavigate("/home" );
+				}else{
+					useNavigate("/dashboard");
+				}
 			}
 		} catch (error) {
 			if (error.response?.status === 401) {
@@ -86,6 +115,8 @@ export default function Login() {
 									id="email"
 									className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 									placeholder="abc@gmail.com"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
 									required
 								/>
 							</div>
@@ -100,6 +131,8 @@ export default function Login() {
 									id="password"
 									className="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
 									placeholder="••••••••"
+									value={password}
+                            		onChange={(e) => setPassword(e.target.value)}
 									required
 								/>
 							</div>
@@ -110,6 +143,8 @@ export default function Login() {
 										id="remember"
 										type="checkbox"
 										className="w-4 h-4 border-gray-300 rounded focus:outline-none focus:ring-0 focus:ring-transparent"
+										checked={remember}
+                                		onChange={(e) => setRemember(e.target.checked)}
 									/>
 									<label htmlFor="remember" className="ml-2 text-sm text-gray-600">
 										Lưu mật khẩu

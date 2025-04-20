@@ -1,23 +1,40 @@
 // src/DashBoard.jsx
 import React, { useState, useEffect } from 'react';
-// import { 
-//   FaHospital, FaBars, FaUserMd, FaTachometerAlt, FaNotesMedia, FaProcedures, 
-//   FaCalendarCheck, FaPills, FaChartLine, FaCog, FaBell, FaEnvelope, FaUser,
-//   FaFilemedical, FaCheckCircle, FaHourglassHalf, FaExclamationTriangle, 
-//   FaSearch, FaPlus, FaEye, FaEdit, FaTrashAlt, FaChevronLeft, FaChevronRight
-// } from 'react-icons/fa';
-// import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
-// import { Doughnut, Line } from 'react-chartjs-2';
+import {useAuth} from "../../core/contexts/AuthContext.jsx";
 
+import { 
+   FaBars, FaUserMd, FaTachometerAlt, FaNotesMedical, FaProcedures, 
+  FaCalendarCheck, FaPills, FaChartLine, FaCog, FaBell, FaEnvelope, FaUser,
+  FaFileMedical, FaCheckCircle, FaHourglassHalf, FaExclamationTriangle, 
+  FaSearch, FaPlus, FaEye, FaEdit, FaTrashAlt, FaChevronLeft, FaChevronRight
+} from 'react-icons/fa';
+import { FaHospital } from "react-icons/fa6";
+import { PiArrowFatLineLeftFill } from "react-icons/pi";
+import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+import { Doughnut, Line } from 'react-chartjs-2';
+import useLogout from '../../core/hooks/useLogout';
+import LoadingSpinner from '../../core/components/Spiner/LoadingSpinner';
 // Register ChartJS components
-// ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(ArcElement, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 function DashBoard() {
+  const {user} = useAuth();
+  const roleMap = {
+    admin: 'Quản trị viên',
+    doctor: 'Bác sĩ',
+    receptionist: 'Lễ tân'
+  };
+
+  const role = roleMap[user.role] || null;
+
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
-  
+  // Hook handle logout
+  const { logout, loading } = useLogout();
+
   const toggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
+ 
 
   // Chart data
   const departmentChartData = {
@@ -151,29 +168,37 @@ function DashBoard() {
 
   return (
     <div className="bg-gray-100 font-sans h-screen overflow-hidden w-full">
+    {loading && (
+                    <div className="fixed top-0 left-0 w-full h-full z-50">
+                        <div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
+                            <LoadingSpinner/>
+                        </div>
+                    </div>
+                )}
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}
-        <div className={`bg-blue-800 text-white flex flex-col ${sidebarCollapsed ? 'w-16' : 'w-64'} transition-all duration-300`}>
+        <div className={`bg-blue-800 text-white flex flex-col ${sidebarCollapsed ? 'w-24' : 'w-64'} transition-all duration-300`}>
           {/* Logo */}
           <div className="p-4 flex items-center justify-between border-b border-blue-700">
             <div className="flex items-center">
-              {/* <FaHospital className="text-2xl" /> */}
-              {!sidebarCollapsed && <span className="font-bold text-xl ml-3">MEDICARE</span>}
+            <FaHospital className="text-2xl" />
+            {/* <img className="w-12 h-12" src="/image/healthcare.png" alt="MediTime"/> */}
+              {!sidebarCollapsed && <span className="font-bold text-xl ml-3">MEDITIME</span>}
             </div>
             <button onClick={toggleSidebar} className="text-white focus:outline-none">
-              {/* <FaBars /> */}
+              <FaBars />
             </button>
           </div>
           
           {/* User Profile */}
-          <div className="p-4 flex items-center border-b border-blue-700">
+          <div className={`p-4 flex items-center  ${sidebarCollapsed ? 'justify-center' : 'justify-start'} border-b border-blue-700`}>
             <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-              {/* <FaUserMd /> */}
+              <FaUserMd />
             </div>
             {!sidebarCollapsed && (
               <div className="ml-3">
-                <div className="font-medium">BS. Nguyễn Văn A</div>
-                <div className="text-xs text-blue-200">Quản trị viên</div>
+                <div className="font-medium">{user.name}</div>
+                <div className="text-xs text-blue-200">{role}</div>
               </div>
             )}
           </div>
@@ -183,44 +208,50 @@ function DashBoard() {
             <ul className="py-2">
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaTachometerAlt className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaTachometerAlt className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Tổng quan</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 bg-blue-700 text-white ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaNotesMedia className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaNotesMedical className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Hồ sơ bệnh án</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaProcedures className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaProcedures className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Bệnh nhân</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaCalendarCheck className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaCalendarCheck className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Lịch hẹn</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaPills className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaPills className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Thuốc</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaChartLine className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaChartLine className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Báo cáo</span>}
                 </a>
               </li>
               <li>
                 <a href="#" className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
-                  {/* <FaCog className={sidebarCollapsed ? '' : 'mr-3'} /> */}
+                  <FaCog className={sidebarCollapsed ? '' : 'mr-3'} />
                   {!sidebarCollapsed && <span>Cài đặt</span>}
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={logout} className={`flex items-center px-4 py-3 text-blue-100 hover:bg-blue-700 ${sidebarCollapsed ? 'justify-center' : ''}`}>
+                  <PiArrowFatLineLeftFill className={sidebarCollapsed ? '' : 'mr-3'} />
+                  {!sidebarCollapsed && <span>Đăng xuất</span>}
                 </a>
               </li>
             </ul>
@@ -242,21 +273,21 @@ function DashBoard() {
               <div className="flex items-center space-x-4">
                 <div className="relative">
                   <button className="text-gray-600 hover:text-gray-900 focus:outline-none">
-                    {/* <FaBell className="text-xl" /> */}
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    <FaBell className="text-xl" />
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
                   </button>
                 </div>
                 <div className="relative">
                   <button className="text-gray-600 hover:text-gray-900 focus:outline-none">
-                    {/* <FaEnvelope className="text-xl" /> */}
-                    <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">5</span>
+                    <FaEnvelope className="text-xl" />
+                    <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">5</span>
                   </button>
                 </div>
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                    {/* <FaUser className="text-blue-600" /> */}
+                    <FaUser className="text-blue-600" />
                   </div>
-                  <span className="ml-2 text-sm font-medium">BS. Nguyễn Văn A</span>
+                  <span className="ml-2 text-sm font-medium">{user.name}</span>
                 </div>
               </div>
             </div>
@@ -269,7 +300,7 @@ function DashBoard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-                    {/* <FaFilemedical className="text-xl" /> */}
+                    <FaFileMedical className="text-xl" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Tổng hồ sơ</p>
@@ -280,7 +311,7 @@ function DashBoard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-green-100 text-green-600">
-                    {/* <FaCheckCircle className="text-xl" /> */}
+                    <FaCheckCircle className="text-xl" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Đã hoàn thành</p>
@@ -291,7 +322,7 @@ function DashBoard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                    {/* <FaHourglassHalf className="text-xl" /> */}
+                    <FaHourglassHalf className="text-xl" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Đang điều trị</p>
@@ -302,7 +333,7 @@ function DashBoard() {
               <div className="bg-white rounded-lg shadow p-6">
                 <div className="flex items-center">
                   <div className="p-3 rounded-full bg-red-100 text-red-600">
-                    {/* <FaExclamationTriangle className="text-xl" /> */}
+                    <FaExclamationTriangle className="text-xl" />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm text-gray-500">Cần xử lý</p>
@@ -321,7 +352,7 @@ function DashBoard() {
                 <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                   <div className="relative">
                     <input type="text" placeholder="Tìm kiếm..." className="pl-10 pr-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    {/* <FaSearch className="absolute left-3 top-3 text-gray-400" /> */}
+                    <FaSearch className="absolute left-3 top-3 text-gray-400" />
                   </div>
                   <select className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option>Tất cả khoa</option>
@@ -331,7 +362,7 @@ function DashBoard() {
                     <option>Nhi khoa</option>
                   </select>
                   <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center justify-center">
-                    {/* <FaPlus className="mr-2" /> */}
+                    <FaPlus className="mr-2" />
                     <span>Thêm hồ sơ</span>
                   </button>
                 </div>
@@ -406,7 +437,7 @@ function DashBoard() {
                     <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                       <a href="#" className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                         <span className="sr-only">Trước</span>
-                        {/* <FaChevronLeft className="h-5 w-5" /> */}
+                        <FaChevronLeft className="h-5 w-5" />
                       </a>
                       <a href="#" aria-current="page" className="z-10 bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 1 </a>
                       <a href="#" className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 2 </a>
@@ -415,7 +446,7 @@ function DashBoard() {
                       <a href="#" className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 8 </a>
                       <a href="#" className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                         <span className="sr-only">Sau</span>
-                        {/* <FaChevronRight className="h-5 w-5" /> */}
+                        <FaChevronRight className="h-5 w-5" />
                       </a>
                     </nav>
                   </div>
@@ -435,7 +466,7 @@ function DashBoard() {
                   </select>
                 </div>
                 <div className="h-64">
-                  {/* <Doughnut data={departmentChartData} options={chartOptions} /> */}
+                  <Doughnut data={departmentChartData} options={chartOptions} />
                 </div>
               </div>
               <div className="bg-white rounded-lg shadow p-6">
@@ -448,7 +479,7 @@ function DashBoard() {
                   </select>
                 </div>
                 <div className="h-64">
-                  {/* <Line data={trendChartData} options={lineChartOptions} /> */}
+                  <Line data={trendChartData} options={lineChartOptions} />
                 </div>
               </div>
             </div>
