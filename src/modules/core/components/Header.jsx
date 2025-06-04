@@ -35,7 +35,7 @@ export default function Header({ onLogout }) {
                         </NavLink>
 
                         <NavLink
-                            to="/services"
+                            to="/specialties"
                             className={({ isActive }) =>
                                 isActive ? "text-blue-600 font-medium" : "text-gray-600 hover:text-blue-600"
                             }

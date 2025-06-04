@@ -6,7 +6,7 @@ import {Navigate} from 'react-router-dom';
 import LoadingSpinner from "../../core/components/Spiner/LoadingSpinner.jsx";
 
 export default function Register() {
-	const { setUser } = useAuth();
+	const { setUser, csrfToken } = useAuth();
 	const [nameError, setNameError] = React.useState('');
 	const [emailError, setEmailError] = React.useState('');
 	const [passwordError, setPasswordError] = React.useState('');
@@ -25,7 +25,9 @@ export default function Register() {
 			role: role.value,
 		};
 		try {
-			const resp = await axios.post('/register', body);
+			// csrfToken();
+
+			const resp = await axios.post('/api/register', body);
 			if (resp.status === 200) {
 				setUser(resp.data.user);
 				return <Navigate to="/home" />;

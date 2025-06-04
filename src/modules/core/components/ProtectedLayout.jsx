@@ -6,52 +6,51 @@ import { useAuth } from '../contexts/AuthContext';
 import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import LoadingSpinner from "./Spiner/LoadingSpinner.jsx";
+import useLogout from '../hooks/useLogout.jsx';
+import Cookies from "js-cookie";
 
 export default function DefaultLayout() {
 	const domainUrl = import.meta.env.VITE_DOMAIN_URL || '/';
-	const [loading, setLoading] = useState(false);
-	const { user, setUser } = useAuth();
+	const { user, setUser, csrfToken } = useAuth();
+	// Hook handle logout
+	const { logout, loading } = useLogout();
 
 	// check if user is logged in or not from server
-	useEffect(() => {
-		(async () => {
-			try {
-				const resp = await axios.get('/user');
-				if (resp.status === 200) {
-					setUser(resp.data.data);
-				}
-			} catch (error) {
-				if (error.response.status === 401) {
-					localStorage.removeItem('user');
-					window.location.href = '/';
-				}
-			}
-		})();
-	}, []);
+	// useEffect(() => {
+	// 	(async () => {
+	// 		try {
+	// 			const resp = await axios.get('/user');
+	// 			if (resp.status === 200) {
+	// 				setUser(resp.data.data);
+	// 			}
+	// 		} catch (error) {
+	// 			if (error.response.status === 401) {
+	// 				localStorage.removeItem('user');
+	// 				window.location.href = '/';
+	// 			}
+	// 		}
+	// 	})();
+	// }, []);
 
-	// if user is not logged in, redirect to login page
-	if (!user) {
+	// if user is not logged in || csrfToken cookie not definde, redirect to login page
+	const csrfTokenValue = Cookies.get('XSRF-TOKEN');
+	// Nếu không có csrfToken, gọi API để lấy lại (nếu cần)
+	if (!csrfTokenValue) {
+		// async await
+		csrfToken();
+	}
+	if (!user ) {
 		return <Navigate to="/" />;
 	}
 
-	// logout user
-	const handleLogout = async () => {
-		setLoading(true);
-		try {
-			const resp = await axios.post('/logout');
-			if (resp.status === 200) {
-				localStorage.removeItem('user');
-				window.location.href = '/';
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			setLoading(false);
-		}
-	};
+	if (user.role != 'patient'){
+		return <Navigate to = "/dashboard" />;
+	}
 	return (
 		<>
-			<Header onLogout={handleLogout}/>
+			{user.role == 'patient' && (
+				<Header onLogout={logout}/>
+			)}
 			{loading && (
 				<div className="fixed top-0 left-0 w-full h-full z-50">
 					<div className="absolute inset-0 bg-white/70 flex items-center justify-center z-10">
@@ -63,7 +62,10 @@ export default function DefaultLayout() {
 				<Outlet/>
 			</main>
 
-			<Footer/>
+			{user.role == 'patient' && (
+				<Footer/>
+			)}
+			
 		</>
 	);
 }
