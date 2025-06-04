@@ -10,7 +10,7 @@ export default function useLogout() {
 	const logout = async () => {
 		setLoading(true);
 		try {
-			const resp = await axios.post('/logout');
+			const resp = await axios.post('/api/logout');
 			if (resp.status === 200) {
                 setUser(null);
 				window.location.href = '/';

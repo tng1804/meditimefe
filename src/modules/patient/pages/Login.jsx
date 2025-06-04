@@ -36,9 +36,9 @@ export default function Login() {
 		const body = { email, password };
 		await csrfToken();
 		try {
-			const resp = await axios.post('/login', body);
+			const resp = await axios.post('/api/login', body);
 			if (resp.status === 200) {
-				setUser(resp.data.user);
+				setUser(resp.data); //resp.data.user
 				// Save credentials to localStorage if "remember" is checked
 				if (remember) {
                     localStorage.setItem('savedEmail', email);
@@ -58,6 +58,8 @@ export default function Login() {
 			}
 		} catch (error) {
 			if (error.response?.status === 401) {
+				setError(error.response.data.message);
+			} else if(error.response?.status === 403){
 				setError(error.response.data.message);
 			} else {
 				setError("Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.");

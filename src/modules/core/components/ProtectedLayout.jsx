@@ -7,10 +7,11 @@ import Header from "./Header.jsx";
 import Footer from "./Footer.jsx";
 import LoadingSpinner from "./Spiner/LoadingSpinner.jsx";
 import useLogout from '../hooks/useLogout.jsx';
+import Cookies from "js-cookie";
 
 export default function DefaultLayout() {
 	const domainUrl = import.meta.env.VITE_DOMAIN_URL || '/';
-	const { user, setUser } = useAuth();
+	const { user, setUser, csrfToken } = useAuth();
 	// Hook handle logout
 	const { logout, loading } = useLogout();
 
@@ -31,8 +32,14 @@ export default function DefaultLayout() {
 	// 	})();
 	// }, []);
 
-	// if user is not logged in, redirect to login page
-	if (!user) {
+	// if user is not logged in || csrfToken cookie not definde, redirect to login page
+	const csrfTokenValue = Cookies.get('XSRF-TOKEN');
+	// Nếu không có csrfToken, gọi API để lấy lại (nếu cần)
+	if (!csrfTokenValue) {
+		// async await
+		csrfToken();
+	}
+	if (!user ) {
 		return <Navigate to="/" />;
 	}
 

@@ -1,28 +1,12 @@
-// import React from 'react';
-// import { useAuth } from '../../core/contexts/AuthContext.jsx';
-//
-// export default function Profile() {
-// 	const { user } = useAuth();
-// 	return (
-// 		<>
-// 			<div className="text-6xl font-bold text-slate-600">Thông tin cá nhân</div>
-// 			<hr className="bg-slate-400 h-1 w-full my-4" />
-// 			<div className="block p-10 bg-white border border-gray-200 shadow-xl rounded-lg shadowdark:border-gray-700">
-// 				<h5 className="my-2 text-2xl font-bold tracking-tight">
-// 					Name: {user.name}
-// 				</h5>
-// 				<p className="font-normal text-gray-700">Email: {user.email}</p>
-// 				<p className="font-normal text-gray-700">
-// 					Created At: {user.created_at}
-// 				</p>
-// 			</div>
-// 		</>
-// 	);
-// }
 import React, { useState } from 'react';
 import { format } from 'date-fns';
 import { FiEdit2, FiSave, FiX } from 'react-icons/fi';
-import { Datepicker   , Label, Select, TextInput } from 'flowbite-react';
+import { Label, Select, TextInput } from 'flowbite-react';
+// import { Datepicker } from 'flowbite-react/components/Datepicker';
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+import { useAuth } from '../../core/contexts/AuthContext';
 
 // Mock patient data - replace with your actual data fetching
 const patientInitialData = {
@@ -37,10 +21,16 @@ const patientInitialData = {
 	avatar: 'https://randomuser.me/api/portraits/men/32.jpg'
 };
 
+
+
 const PatientProfile = () => {
 	const [patientData, setPatientData] = useState(patientInitialData);
 	const [isEditing, setIsEditing] = useState(false);
 	const [formData, setFormData] = useState(patientInitialData);
+
+	const { user } = useAuth();
+	console.log(user)
+
 
 	const handleEditToggle = () => {
 		if (isEditing) {
@@ -182,17 +172,16 @@ const PatientProfile = () => {
 							</div>
 
 							{/* Date of Birth */}
-							<div>
-								<Label htmlFor="date_of_birth" value="Ngày sinh" />
+							<div className="flex flex-col">
+								<Label htmlFor="date_of_birth" value="Ngày sinh" className="mb-1 text-sm font-medium text-gray-700" />
 								{isEditing ? (
-									<Datepicker
-										id="date_of_birth"
-										value={formData.date_of_birth}
-										onSelectedDateChanged={handleDateChange}
-										className="mt-1"
+									<DatePicker
+										selected={formData.date_of_birth}
+										onChange={handleDateChange}
+										className="mt-1 block w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm text-gray-900 shadow-sm focus:border-blue-500 focus:ring-blue-500"
 									/>
 								) : (
-									<p className="mt-1 text-gray-800">
+									<p className="mt-1 text-sm text-gray-800">
 										{format(new Date(patientData.date_of_birth), 'dd/MM/yyyy')}
 									</p>
 								)}

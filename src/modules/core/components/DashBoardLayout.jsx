@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import axios from '../../../axios.js';
 import { useAuth } from '../contexts/AuthContext.jsx';
-import Header from "./Header.jsx";
-import Footer from "./Footer.jsx";
 import LoadingSpinner from "./Spiner/LoadingSpinner.jsx";
 
 export default function DashBoardLayout() {
@@ -12,43 +10,16 @@ export default function DashBoardLayout() {
 	const [loading, setLoading] = useState(false);
 	const { user, setUser } = useAuth();
 
-	// check if user is logged in or not from server
-	useEffect(() => {
-		(async () => {
-			try {
-				const resp = await axios.get('/user');
-				if (resp.status === 200) {
-					setUser(resp.data.data);
-				}
-			} catch (error) {
-				if (error.response.status === 401) {
-					localStorage.removeItem('user');
-					window.location.href = '/';
-				}
-			}
-		})();
-	}, []);
 
 	// if user is not logged in, redirect to login page
 	if (!user) {
 		return <Navigate to="/" />;
 	}
-
-	// logout user
-	const handleLogout = async () => {
-		setLoading(true);
-		try {
-			const resp = await axios.post('/logout');
-			if (resp.status === 200) {
-				localStorage.removeItem('user');
-				window.location.href = '/';
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			setLoading(false);
-		}
-	};
+	console.log("user" , user.role);
+	if(user.role == 'patient'){
+		// useNavigate("/home" );
+		return <Navigate to="/home" />;
+	}
 	return (
 		<>
 			{loading && (
@@ -58,7 +29,7 @@ export default function DashBoardLayout() {
 					</div>
 				</div>
 			)}
-			<main className="container flex justify-center flex-col items-center mx-0 px-0">
+			<main className="container flex justify-center flex-col items-center mx-0 px-0 max-w-full">
 				<Outlet/>
 			</main>
 			
